@@ -37,11 +37,6 @@ L.Label = L.Popup.extend({
 		}
 		this._updateContent();
 
-		var animFade = map.options.fadeAnimation;
-
-		if (animFade) {
-			L.DomUtil.setOpacity(this._container, 0);
-		}
 		this._pane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -56,24 +51,16 @@ L.Label = L.Popup.extend({
 
 		this._initInteraction();
 
-		this._update();
-
 		this.setOpacity(this.options.opacity);
 	},
 
 	onRemove: function (map) {
 		this._pane.removeChild(this._container);
 
-		L.Util.falseFn(this._container.offsetWidth); // force reflow
-
 		map.off({
 			viewreset: this._updatePosition,
 			zoomanim: this._zoomAnimation
 		}, this);
-
-		if (map.options.fadeAnimation) {
-			L.DomUtil.setOpacity(this._container, 0);
-		}
 
 		this._removeInteraction();
 
@@ -87,8 +74,6 @@ L.Label = L.Popup.extend({
 			if (L.Browser.touch && !this.options.noHide) {
 				L.DomEvent.off(this._container, 'click', this.close);
 			}
-
-			map._label = null;
 
 			map.removeLayer(this);
 		}
@@ -200,6 +185,7 @@ L.Label = L.Popup.extend({
 		}
 	}
 });
+
 
 // Add in an option to icon that is used to set where the label anchor is
 L.Icon.Default.mergeOptions({
@@ -422,8 +408,6 @@ L.Path.include({
 
 L.Map.include({
 	showLabel: function (label) {
-		this._label = label;
-
 		return this.addLayer(label);
 	}
 });

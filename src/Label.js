@@ -36,8 +36,6 @@ L.Label = L.Popup.extend({
 
 		this._initInteraction();
 
-		this._update();
-
 		this.setOpacity(this.options.opacity);
 	},
 
